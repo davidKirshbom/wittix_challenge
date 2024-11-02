@@ -1,5 +1,4 @@
 <script setup>
-import Checkbox from "@/Components/Checkbox.vue";
 import GuestLayout from "@/Layouts/GuestLayout.vue";
 import InputError from "@/Components/InputError.vue";
 import InputLabel from "@/Components/InputLabel.vue";
@@ -19,12 +18,12 @@ import { login } from "@/api/user";
 
         <form @submit.prevent="submit">
             <div>
-                <InputLabel for="email" value="Email" />
+                <InputLabel for="username" value="username" />
 
                 <TextInput
-                    id="email"
-                    type="email"
-                    name="email"
+                    id="username"
+                    type="text"
+                    name="username"
                     class="mt-1 block w-full"
                     v-model="form.email"
                     required
@@ -32,7 +31,7 @@ import { login } from "@/api/user";
                     autocomplete="username"
                 />
 
-                <InputError class="mt-2" :message="form.errors.email" />
+                <InputError class="mt-2" :message="form.errors.username" />
             </div>
 
             <div class="mt-4">
@@ -52,6 +51,12 @@ import { login } from "@/api/user";
             </div>
 
             <div class="mt-4 flex items-center justify-end">
+                <Link
+                    :href="route('register')"
+                    class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                >
+                    Not a user?
+                </Link>
                 <PrimaryButton
                     class="ms-4"
                     :class="{ 'opacity-25': form.processing }"
@@ -60,11 +65,12 @@ import { login } from "@/api/user";
                     Log in
                 </PrimaryButton>
             </div>
+            <InputError class="mt-2" :message="form.errors.general" />
         </form>
     </GuestLayout>
 </template>
 <script>
-import { useUserStore } from "@/Stores/UserStore";
+import { useUserStore } from "../stores/userStore";
 export default {
     setup() {
         return { form };
@@ -80,15 +86,16 @@ export default {
             processing: false,
         };
         const submit = async (event) => {
+            event.preventDefault();
             const formData = new FormData(event.target);
 
             try {
                 const response = await login(formData);
-
-                userStore.setUser(response.data.user);
+                userStore.setUser(response.data);
                 window.location.href = "/dashboard";
             } catch (error) {
-                this.form.errors = error.response.data;
+                console.error(error);
+                this.form.errors.general = error.response.data;
             }
         };
         return {

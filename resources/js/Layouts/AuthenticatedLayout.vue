@@ -1,10 +1,5 @@
 <script setup>
-import ApplicationLogo from "@/Components/ApplicationLogo.vue";
-import Dropdown from "@/Components/Dropdown.vue";
-import DropdownLink from "@/Components/DropdownLink.vue";
-import NavLink from "@/Components/NavLink.vue";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
-import { Link } from "@inertiajs/vue3";
 </script>
 
 <template>
@@ -19,13 +14,6 @@ import { Link } from "@inertiajs/vue3";
                         </div>
                         <div class="flex">
                             <!-- Navigation Links -->
-                            <ResponsiveNavLink
-                                :href="route('logout')"
-                                method="post"
-                                as="button"
-                            >
-                                Log Out
-                            </ResponsiveNavLink>
                         </div>
                     </div>
                 </div>
@@ -38,30 +26,14 @@ import { Link } from "@inertiajs/vue3";
                     }"
                     class="sm:hidden"
                 >
-                    <div class="space-y-1 pb-3 pt-2">
-                        <ResponsiveNavLink
-                            :href="route('dashboard')"
-                            :active="route().current('dashboard')"
-                        >
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
+                    <div class="space-y-1 pb-3 pt-2"></div>
 
                     <!-- Responsive Settings Options -->
                     <div class="border-t border-gray-200 pb-1 pt-4">
                         <div class="px-4">
                             <div class="text-base font-medium text-gray-800">
-                                {{ $page.props.auth.user.name }}
+                                {{ $page.props.auth.user?.username }}
                             </div>
-                            <div class="text-sm font-medium text-gray-500">
-                                {{ $page.props.auth.user.email }}
-                            </div>
-                        </div>
-
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')">
-                                Profile
-                            </ResponsiveNavLink>
                         </div>
                     </div>
                 </div>

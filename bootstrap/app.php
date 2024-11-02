@@ -1,5 +1,6 @@
 <?php
 
+use App\Actions\CreateUser;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
@@ -15,17 +16,27 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->statefulApi();
         $middleware->web(append: [
+
             \App\Http\Middleware\HandleInertiaRequests::class,
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+
+        ]);
+        $middleware->api(append: [
+
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+
         ]);
 
         //
-        $middleware->append(\Illuminate\Session\Middleware\StartSession::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
         $exceptions->render(function (HttpException $e, HttpRequest $request) {
             return response()->json(['error' => $e->getMessage()], $e->getStatusCode());
         });
-    })->create();
+    })->withCommands([CreateUser::class])->create();

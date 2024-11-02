@@ -73,6 +73,18 @@ Compile assets for production:
 npm run production
 ```
 
+## Adding a User
+
+To add a new user, you can use the following command:
+
+```sh
+php artisan app:register-user
+```
+
+it will return a username and password for login
+
+This command will display the user's details in a table format.
+
 ## Contributing
 
 Contributions are welcome! Please submit a pull request or open an issue to discuss changes.

@@ -1,18 +1,17 @@
 import axios from "axios";
 
-export function login(data) {
-    return axios.post("/api/login", data, {
-        headers: { "Content-Type": "application/form-data" },
-    });
+export async function login(data) {
+    return axios.post("/api/login", data, {});
 }
 
-export function register(data) {
-    return axios.post("/api/register", data, {
-        headers: { "Content-Type": "application/form-data" },
-    });
+export async function register(data) {
+    return axios.post("/api/register", data);
 }
 
-// if default value is "", then it will return the current user profile
-export function getProfile(userId = undefined) {
-    return axios.get("/api/users/" + userId);
+export function usersList() {
+    return axios.get("/api/users");
+}
+
+export function deleteUser(id) {
+    return axios.delete(`/api/users/${id}`);
 }
